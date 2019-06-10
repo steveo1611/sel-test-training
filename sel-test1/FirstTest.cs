@@ -44,7 +44,7 @@ namespace sel_test1
             driver.FindElement(By.XPath("//*[@id='selectable']//*[text()='Item 7']")).Click();
             Thread.Sleep(500);
             // clear last selected item in prep for multiple selection 
-            var clearSelection = driver.FindElement(By.XPath("//*[@id='selectable']//*[text()='Item 7']"));
+            IWebElement clearSelection = driver.FindElement(By.XPath("//*[@id='selectable']//*[text()='Item 7']"));
             new Actions(driver).MoveToElement(clearSelection).MoveByOffset(-125, 10).Click().Perform();
             
             Thread.Sleep(2000);
@@ -54,7 +54,7 @@ namespace sel_test1
             IWebElement MultiSelectSecond = driver.FindElement(By.XPath("//*[@id='selectable']//*[text()='Item 3']"));
             IWebElement MultiSelectThird = driver.FindElement(By.XPath("//*[@id='selectable']//*[text()='Item 5']"));
 
-            Actions multipleSelect = multiSelectBuild.KeyDown(Keys.Control).Click(MultiSelectFirst).Click(MultiSelectSecond).Click(MultiSelectThird);
+            Actions multipleSelect = multiSelectBuild.KeyDown(Keys.Control).Click(MultiSelectFirst).Click(MultiSelectSecond).Click(MultiSelectThird).KeyUp(Keys.Control);
             multipleSelect.Perform();
             Thread.Sleep(2000);
 
@@ -62,13 +62,30 @@ namespace sel_test1
 
 
             // click on the Resizable link on sidebar: moves to the resizable page
-     //       driver.FindElement(By.PartialLinkText("resizable")).Click();
-            
+            driver.FindElement(By.PartialLinkText("Resizable")).Click();
+
+            // resize box
+           driver.FindElement(By.XPath("//*[@id='resizable']//*[contains(@class, 'ui-resizable-se')]")).Click();
+           IWebElement findResizeControl = driver.FindElement(By.XPath("//*[@id='resizable']//*[contains(@class, 'ui-resizable-se')]"));
+           new Actions(driver).DragAndDropToOffset(findResizeControl, 250, 500).Perform();
+           Thread.Sleep(2000);
+           new Actions(driver).DragAndDropToOffset(findResizeControl, -50, -625).Perform();
+           Thread.Sleep(2000);
+           new Actions(driver).DragAndDropToOffset(findResizeControl, 150, 125).Perform();
+           Thread.Sleep(2000);
 
 
+            // click on the Droppable link on sidebar
+            driver.FindElement(By.PartialLinkText("Droppable")).Click();
+
+            IWebElement draggableElement = driver.FindElement(By.XPath("//*[@id='draggable']"));
+            IWebElement droppableElement = driver.FindElement(By.XPath("//*[@id='droppable']"));
+            Thread.Sleep(500);
+            new Actions(driver).ClickAndHold(draggableElement).DragAndDrop(draggableElement, droppableElement).Perform();
+            Thread.Sleep(1000);
 
 
-
+            //   Console.ReadKey();
             driver.Quit();
            
 
