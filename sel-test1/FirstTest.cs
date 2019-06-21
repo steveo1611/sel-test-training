@@ -6,7 +6,6 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 
-
 namespace sel_test1
 {
     class FirstTest
@@ -16,6 +15,7 @@ namespace sel_test1
             IWebDriver driver = new ChromeDriver(@"C:\source\selenium-chrome\");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             driver.Navigate().GoToUrl("http://www.demoqa.com/sortable");
+            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
 
             driver.Manage().Window.Maximize();
 
@@ -23,8 +23,6 @@ namespace sel_test1
             Actions builderFirst = new Actions(driver);
             IAction dragAndDropFirst = builderFirst.ClickAndHold(MoveFirstElement).MoveByOffset(0, 120).Release(MoveFirstElement).Build();
             dragAndDropFirst.Perform();
-
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             Console.WriteLine("test1 done");
 
@@ -62,8 +60,7 @@ namespace sel_test1
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
             Console.WriteLine("Test 3");
-
-
+            
             // click on the Resizable link on sidebar: moves to the resizable page
             driver.FindElement(By.PartialLinkText("Resizable")).Click();
 
@@ -76,8 +73,7 @@ namespace sel_test1
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
             new Actions(driver).DragAndDropToOffset(findResizeControl, 150, 125).Perform();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-
-
+            
             // click on the Droppable link on sidebar
             driver.FindElement(By.PartialLinkText("Droppable")).Click();
 
@@ -86,30 +82,24 @@ namespace sel_test1
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(500);
             new Actions(driver).ClickAndHold(draggableElement).DragAndDrop(draggableElement, droppableElement).Perform();
             
-       
-
             // select menu from Widgets section
             driver.FindElement(By.PartialLinkText("Selectmenu")).Click();
             
-           
+           // For the "ui-id-##" the numbers are across all of the different pull-downs so the number pulldown starts at "id-6"
             driver.FindElement(By.XPath("//*[@id='speed-button']/span[@class='ui-selectmenu-text']")).Click();
             driver.FindElement(By.Id("ui-id-2")).Click();
             driver.FindElement(By.XPath("//*[@id='speed-button']/span[@class='ui-selectmenu-text']")).Click();
             driver.FindElement(By.Id("ui-id-5")).Click();
 
-            //  dropListSpeedMenu = wait.Until(d => dropListSpeedMenu.FindElement(By.XPath("//*[@id='speed-button']/[@aria-expanded='true']")));
-            //  dropListSpeedMenu = wait.Until(d => dropListSpeedMenu.FindElement(By.CssSelector("#speed-button[aria-expanded='true']")));
-
+        //   new Actions(driver).
+            js.ExecuteScript("window.scrollBy(0, 200)");
             driver.FindElement(By.XPath("//*[@id='number-button']/span[@class='ui-selectmenu-text']")).Click();
-            driver.FindElement(By.Id("ui-id-4")).Click();
+            driver.FindElement(By.Id("ui-id-20")).Click();
 
-
-            Console.WriteLine("end of pull down menu testing"); 
+            Console.WriteLine("end of testing"); 
             Console.ReadKey();
             driver.Quit();
-           
-
-        }
+         }
 
     }
 }
